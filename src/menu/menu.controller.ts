@@ -38,6 +38,13 @@ export class MenuController {
     return this.menuService.findAll();
   }
 
+  @Get('anamenu-alt/:anamenuAltId')
+  @ApiOperation({ summary: 'Belirli bir anamenu-alt\'a ait alt menüleri listele' })
+  @ApiResponse({ status: 200, description: 'Alt menüler listelendi', type: [Menu] })
+  findByAnamenuAltId(@Param('anamenuAltId') anamenuAltId: string): Promise<Menu[]> {
+    return this.menuService.findByAnamenuAltId(+anamenuAltId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Menü detayını getir' })
   @ApiResponse({ status: 200, description: 'Menü detayı', type: Menu })

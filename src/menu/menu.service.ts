@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
-import { Menu } from './entities/menu.entity';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CreateMenuDto } from "./dto/create-menu.dto";
+import { UpdateMenuDto } from "./dto/update-menu.dto";
+import { Menu } from "./entities/menu.entity";
 
 @Injectable()
 export class MenuService {
@@ -19,17 +19,24 @@ export class MenuService {
 
   async findAll(): Promise<Menu[]> {
     return await this.menuRepository.find({
-      relations: ['anamenu'],
+      relations: ["anamenuAlt"],
       order: {
-        sira: 'ASC',
+        sira: "ASC",
       },
+    });
+  }
+
+  async findByAnamenuAltId(anamenuAltId: number): Promise<Menu[]> {
+    return await this.menuRepository.find({
+      where: { anamenu_alt_id: anamenuAltId },
+      order: { sira: "ASC" },
     });
   }
 
   async findOne(id: number): Promise<Menu> {
     const menu = await this.menuRepository.findOne({
       where: { id },
-      relations: ['anamenu'],
+      relations: ["anamenuAlt"],
     });
 
     if (!menu) {

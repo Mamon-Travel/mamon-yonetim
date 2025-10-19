@@ -12,6 +12,6 @@ export class Yetkiler {
   yetki: string;
 
   @ApiProperty({ description: 'Durum (aktif/pasif)' })
-  @Column({ type: 'tinyint', default: 1 })
+  @Column({ type: 'smallint', default: 1 })
   durum: number;
 }

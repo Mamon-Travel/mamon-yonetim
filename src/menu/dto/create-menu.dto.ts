@@ -2,15 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateMenuDto {
-  @ApiProperty({ description: 'Menü adı', example: 'Kullanıcılar' })
+  @ApiProperty({ description: 'Alt menü adı', example: 'Kullanıcı Listesi' })
   @IsString()
   @IsNotEmpty()
   menu: string;
 
-  @ApiProperty({ description: 'Ana menü ID', example: 1 })
+  @ApiProperty({ description: 'Anamenu Alt ID', example: 1 })
   @IsNumber()
   @IsNotEmpty()
-  anamenu_id: number;
+  anamenu_alt_id: number;
 
   @ApiProperty({
     description: 'Rota bilgisi',

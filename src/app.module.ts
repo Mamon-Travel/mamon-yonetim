@@ -10,6 +10,10 @@ import { YetkilerModule } from "./yetkiler/yetkiler.module";
 import { KullanicilarModule } from "./kullanicilar/kullanicilar.module";
 import { HizmetlerModule } from './hizmetler/hizmetler.module';
 import { AuthModule } from './auth/auth.module';
+import { UrunlerModule } from './urunler/urunler.module';
+import { RezervasyonlarModule } from './rezervasyonlar/rezervasyonlar.module';
+import { SepetModule } from './sepet/sepet.module';
+import { OdemeModule } from './odeme/odeme.module';
 
 @Module({
   imports: [
@@ -33,6 +37,10 @@ import { AuthModule } from './auth/auth.module';
     KullanicilarModule,
     HizmetlerModule,
     AuthModule,
+    UrunlerModule,
+    RezervasyonlarModule,
+    SepetModule,
+    OdemeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

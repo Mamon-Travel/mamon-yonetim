@@ -53,3 +53,4 @@ export class CreateHizmetlerDto {
   @IsString()
   meta_description?: string;
 }
+

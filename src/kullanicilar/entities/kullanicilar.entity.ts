@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { KullaniciTipi } from '../enums/kullanici-tipi.enum';
 
 @Entity('kullanicilar')
 export class Kullanicilar {
@@ -41,8 +42,20 @@ export class Kullanicilar {
   @Column({ type: 'varchar', length: 500, nullable: true })
   resim?: string;
 
+  @ApiProperty({
+    description: 'Kullanıcı tipi',
+    enum: KullaniciTipi,
+    example: KullaniciTipi.MUSTERI,
+  })
+  @Column({
+    type: 'enum',
+    enum: KullaniciTipi,
+    default: KullaniciTipi.MUSTERI,
+  })
+  kullanici_tipi: KullaniciTipi;
+
   @ApiProperty({ description: 'Durum (1: Aktif, 0: Pasif)' })
-  @Column({ type: 'tinyint', default: 1 })
+  @Column({ type: 'smallint', default: 1 })
   durum: number;
 
   @ApiProperty({

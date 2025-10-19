@@ -4,13 +4,10 @@ import {
   IsNotEmpty,
   IsEmail,
   IsOptional,
-  IsNumber,
   MinLength,
-  IsEnum,
 } from 'class-validator';
-import { KullaniciTipi } from '../enums/kullanici-tipi.enum';
 
-export class CreateKullanicilarDto {
+export class RegisterDto {
   @ApiProperty({ description: 'Ad', example: 'Barış' })
   @IsString()
   @IsNotEmpty()
@@ -45,41 +42,5 @@ export class CreateKullanicilarDto {
   @IsString()
   @IsOptional()
   telefon?: string;
-
-  @ApiProperty({
-    description: 'Profil resmi URL',
-    example: '/uploads/avatar.jpg',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  resim?: string;
-
-  @ApiProperty({
-    description: 'Kullanıcı tipi',
-    enum: KullaniciTipi,
-    example: KullaniciTipi.MUSTERI,
-    required: false,
-  })
-  @IsEnum(KullaniciTipi)
-  @IsOptional()
-  kullanici_tipi?: KullaniciTipi;
-
-  @ApiProperty({
-    description: 'Durum (1: Aktif, 0: Pasif)',
-    example: 1,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  durum?: number;
-
-  @ApiProperty({
-    description: "Yetki ID'leri (virgülle ayrılmış)",
-    example: '1,2,3',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  yetki_ids?: string;
 }
+

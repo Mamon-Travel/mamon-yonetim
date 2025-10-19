@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Hizmetler } from './hizmetler/entities/hizmetler.entity';
 
 async function seed() {
   const dataSource = new DataSource({
@@ -161,6 +162,85 @@ async function seed() {
         console.log(`  ✅ "${menuItem.menu}" menüsü eklendi`);
       } else {
         console.log(`  ℹ️  "${menuItem.menu}" menüsü zaten mevcut`);
+      }
+    }
+
+    // Varsayılan hizmetler
+    const defaultHizmetler = [
+      {
+        ad: 'Konaklama',
+        slug: 'stays',
+        aciklama: 'Mükemmel konaklama seçenekleri bulun',
+        ikon: 'House03Icon',
+        renk: '#3B82F6',
+        sira: 1,
+        aktif: true,
+        url: '/',
+        meta_title: 'Konaklama Rezervasyonu - Chisfis',
+        meta_description: 'Dünyanın her yerinde konaklama seçenekleri bulun ve rezervasyon yapın'
+      },
+      {
+        ad: 'Araç Kiralama',
+        slug: 'cars',
+        aciklama: 'Seyahatiniz için ideal aracı bulun',
+        ikon: 'Car05Icon',
+        renk: '#10B981',
+        sira: 2,
+        aktif: true,
+        url: '/car',
+        meta_title: 'Araç Kiralama - Chisfis',
+        meta_description: 'Uygun fiyatlarla araç kiralama seçenekleri'
+      },
+      {
+        ad: 'Emlak',
+        slug: 'real-estate',
+        aciklama: 'Satın almak veya kiralamak için mükemmel yeri bulun',
+        ikon: 'RealEstate02Icon',
+        renk: '#F59E0B',
+        sira: 3,
+        aktif: true,
+        url: '/real-estate',
+        meta_title: 'Emlak - Chisfis',
+        meta_description: 'Emlak satış ve kiralama seçenekleri'
+      },
+      {
+        ad: 'Deneyimler',
+        slug: 'experiences',
+        aciklama: 'Unutulmaz deneyimler yaşayın',
+        ikon: 'HotAirBalloonFreeIcons',
+        renk: '#8B5CF6',
+        sira: 4,
+        aktif: true,
+        url: '/experiences',
+        meta_title: 'Deneyimler - Chisfis',
+        meta_description: 'Yerel deneyimler ve aktiviteler'
+      },
+      {
+        ad: 'Uçuşlar',
+        slug: 'flights',
+        aciklama: 'En uygun uçuş fiyatlarını bulun',
+        ikon: 'Airplane02Icon',
+        renk: '#EF4444',
+        sira: 5,
+        aktif: true,
+        url: '/flights',
+        meta_title: 'Uçuş Rezervasyonu - Chisfis',
+        meta_description: 'Ucuz uçak bileti ve uçuş seçenekleri'
+      }
+    ];
+
+    console.log('🚀 Hizmetler kontrol ediliyor...');
+    for (const hizmet of defaultHizmetler) {
+      const existingHizmet = await dataSource.getRepository(Hizmetler).findOne({
+        where: { slug: hizmet.slug }
+      });
+
+      if (!existingHizmet) {
+        const newHizmet = dataSource.getRepository(Hizmetler).create(hizmet);
+        await dataSource.getRepository(Hizmetler).save(newHizmet);
+        console.log(`✅ Hizmet eklendi: ${hizmet.ad}`);
+      } else {
+        console.log(`⚠️  Hizmet zaten mevcut: ${hizmet.ad}`);
       }
     }
 

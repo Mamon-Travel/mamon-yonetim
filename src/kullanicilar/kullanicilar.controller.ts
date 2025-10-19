@@ -8,15 +8,27 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { KullanicilarService } from './kullanicilar.service';
 import { CreateKullanicilarDto } from './dto/create-kullanicilar.dto';
 import { UpdateKullanicilarDto } from './dto/update-kullanicilar.dto';
-import { LoginKullaniciDto } from './dto/login-kullanici.dto';
 import { Kullanicilar } from './entities/kullanicilar.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { KullaniciTipi } from './enums/kullanici-tipi.enum';
 
 @ApiTags('Kullanıcılar')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(KullaniciTipi.YONETICI)
 @Controller('kullanicilar')
 export class KullanicilarController {
   constructor(private readonly kullanicilarService: KullanicilarService) {}
@@ -83,21 +95,5 @@ export class KullanicilarController {
   @ApiResponse({ status: 404, description: 'Kullanıcı bulunamadı' })
   remove(@Param('id') id: string): Promise<void> {
     return this.kullanicilarService.remove(+id);
-  }
-
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Kullanıcı girişi' })
-  @ApiResponse({
-    status: 200,
-    description: 'Giriş başarılı',
-    type: Kullanicilar,
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Kullanıcı adı veya şifre hatalı',
-  })
-  login(@Body() loginDto: LoginKullaniciDto): Promise<Kullanicilar> {
-    return this.kullanicilarService.login(loginDto);
   }
 }

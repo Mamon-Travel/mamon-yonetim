@@ -9,6 +9,7 @@ import { MenuModule } from "./menu/menu.module";
 import { YetkilerModule } from "./yetkiler/yetkiler.module";
 import { KullanicilarModule } from "./kullanicilar/kullanicilar.module";
 import { HizmetlerModule } from './hizmetler/hizmetler.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { HizmetlerModule } from './hizmetler/hizmetler.module';
     YetkilerModule,
     KullanicilarModule,
     HizmetlerModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

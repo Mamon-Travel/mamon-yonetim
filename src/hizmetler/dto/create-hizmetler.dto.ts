@@ -54,3 +54,5 @@ export class CreateHizmetlerDto {
   meta_description?: string;
 }
 
+
+

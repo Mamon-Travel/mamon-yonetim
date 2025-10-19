@@ -2,12 +2,15 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateKullanicilarDto } from './dto/create-kullanicilar.dto';
 import { UpdateKullanicilarDto } from './dto/update-kullanicilar.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Kullanicilar } from './entities/kullanicilar.entity';
 
 @Injectable()
@@ -111,5 +114,79 @@ export class KullanicilarService {
     }
 
     await this.kullanicilarRepository.remove(kullanici);
+  }
+
+  // Profil metodları
+  async getProfile(userId: number): Promise<Kullanicilar> {
+    const kullanici = await this.kullanicilarRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!kullanici) {
+      throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+
+    // Şifreyi döndürme
+    const { sifre, ...kullaniciData } = kullanici;
+    return kullaniciData as Kullanicilar;
+  }
+
+  async updateProfile(
+    userId: number,
+    updateProfileDto: UpdateProfileDto,
+  ): Promise<Kullanicilar> {
+    const kullanici = await this.kullanicilarRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!kullanici) {
+      throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+
+    // Şifre değişikliği kontrolü
+    if (updateProfileDto.yeniSifre) {
+      if (!updateProfileDto.mevcutSifre) {
+        throw new BadRequestException(
+          'Şifre değiştirmek için mevcut şifre gerekli',
+        );
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        updateProfileDto.mevcutSifre,
+        kullanici.sifre,
+      );
+
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Mevcut şifre hatalı');
+      }
+
+      kullanici.sifre = await bcrypt.hash(updateProfileDto.yeniSifre, 10);
+    }
+
+    // Email değişikliği kontrolü
+    if (updateProfileDto.email && updateProfileDto.email !== kullanici.email) {
+      const existingUser = await this.kullanicilarRepository.findOne({
+        where: { email: updateProfileDto.email },
+      });
+
+      if (existingUser) {
+        throw new ConflictException('Bu email zaten kullanılıyor');
+      }
+      kullanici.email = updateProfileDto.email;
+    }
+
+    // Diğer alanları güncelle
+    if (updateProfileDto.ad) kullanici.ad = updateProfileDto.ad;
+    if (updateProfileDto.soyad) kullanici.soyad = updateProfileDto.soyad;
+    if (updateProfileDto.telefon !== undefined)
+      kullanici.telefon = updateProfileDto.telefon;
+    if (updateProfileDto.resim !== undefined)
+      kullanici.resim = updateProfileDto.resim;
+
+    const updated = await this.kullanicilarRepository.save(kullanici);
+
+    // Şifreyi döndürme
+    const { sifre, ...kullaniciData } = updated;
+    return kullaniciData as Kullanicilar;
   }
 }

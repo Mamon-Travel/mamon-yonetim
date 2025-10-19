@@ -22,3 +22,5 @@ import { Kullanicilar } from '../kullanicilar/entities/kullanicilar.entity';
 })
 export class AuthModule {}
 
+
+

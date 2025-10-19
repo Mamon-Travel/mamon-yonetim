@@ -299,3 +299,5 @@ Swagger üzerinden:
 9. 🔄 Password reset fonksiyonu
 10. 🔄 Email doğrulama
 
+
+

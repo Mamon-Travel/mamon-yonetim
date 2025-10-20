@@ -12,3 +12,4 @@ import { Urunler } from './entities/urunler.entity';
 })
 export class UrunlerModule {}
 
+

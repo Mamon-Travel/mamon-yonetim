@@ -28,3 +28,4 @@ export class CreateSepetDto {
   rezervasyonBilgileri?: any;
 }
 
+

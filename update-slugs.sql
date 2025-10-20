@@ -13,3 +13,4 @@ UPDATE urunler SET slug = 'izmir-istanbul-business' WHERE id = 15;
 -- Slug'ları kontrol et
 SELECT id, baslik, slug, hizmet_id FROM urunler ORDER BY hizmet_id, id;
 
+

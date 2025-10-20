@@ -14,6 +14,12 @@ import { UrunlerModule } from './urunler/urunler.module';
 import { RezervasyonlarModule } from './rezervasyonlar/rezervasyonlar.module';
 import { SepetModule } from './sepet/sepet.module';
 import { OdemeModule } from './odeme/odeme.module';
+import { PanelKullanicilarModule } from './panel-kullanicilar/panel-kullanicilar.module';
+import { OtelOzellikModule } from './otel-ozellik/otel-ozellik.module';
+import { OtelOdaOzellikModule } from './otel-oda-ozellik/otel-oda-ozellik.module';
+import { OtelModule } from './otel/otel.module';
+import { DillerModule } from './diller/diller.module';
+import { CevirilerModule } from './ceviriler/ceviriler.module';
 
 @Module({
   imports: [
@@ -41,6 +47,12 @@ import { OdemeModule } from './odeme/odeme.module';
     RezervasyonlarModule,
     SepetModule,
     OdemeModule,
+    PanelKullanicilarModule,
+    OtelOzellikModule,
+    OtelOdaOzellikModule,
+    OtelModule,
+    DillerModule,
+    CevirilerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

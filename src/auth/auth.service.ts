@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Kullanicilar } from '../kullanicilar/entities/kullanicilar.entity';
+import { PanelKullanicilar } from '../panel-kullanicilar/entities/panel-kullanicilar.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterAdminDto } from './dto/register-admin.dto';
@@ -18,6 +19,8 @@ export class AuthService {
   constructor(
     @InjectRepository(Kullanicilar)
     private readonly kullanicilarRepository: Repository<Kullanicilar>,
+    @InjectRepository(PanelKullanicilar)
+    private readonly panelKullanicilarRepository: Repository<PanelKullanicilar>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -53,7 +56,7 @@ export class AuthService {
     const token = this.createToken(savedUser);
 
     // Şifreyi döndürme
-    const { sifre, ...kullaniciData } = savedUser;
+    const { sifre: _, ...kullaniciData } = savedUser;
 
     return {
       kullanici: kullaniciData,
@@ -92,7 +95,7 @@ export class AuthService {
     const token = this.createToken(savedUser);
 
     // Şifreyi döndürme
-    const { sifre, ...kullaniciData } = savedUser;
+    const { sifre: _s, ...kullaniciData } = savedUser;
 
     return {
       kullanici: kullaniciData,
@@ -129,7 +132,7 @@ export class AuthService {
     const token = this.createToken(kullanici);
 
     // Şifreyi döndürme
-    const { sifre, ...kullaniciData } = kullanici;
+    const { sifre: _s2, ...kullaniciData } = kullanici;
 
     return {
       kullanici: kullaniciData,
@@ -179,7 +182,7 @@ export class AuthService {
     const token = this.createToken(kullanici);
 
     // Şifreyi döndürme
-    const { sifre, ...kullaniciData } = kullanici;
+    const { sifre: _s3, ...kullaniciData } = kullanici;
 
     return {
       kullanici: kullaniciData,
@@ -197,8 +200,45 @@ export class AuthService {
     }
 
     // Şifreyi döndürme
-    const { sifre, ...kullaniciData } = kullanici;
+    const { sifre: _s4, ...kullaniciData } = kullanici;
     return kullaniciData;
+  }
+
+  async loginPanelUser(loginDto: LoginDto) {
+    // Panel kullanıcı adı veya email ile ara
+    const kullanici = await this.panelKullanicilarRepository.findOne({
+      where: [
+        { kullanici_adi: loginDto.kullanici_adi },
+        { email: loginDto.kullanici_adi },
+      ],
+    });
+
+    if (!kullanici) {
+      throw new UnauthorizedException('Kullanıcı adı veya şifre hatalı');
+    }
+
+    // Durum kontrolü
+    if (kullanici.durum !== 1) {
+      throw new UnauthorizedException('Hesabınız aktif değil');
+    }
+
+    // Şifre kontrolü
+    const sifreDogruMu = await bcrypt.compare(loginDto.sifre, kullanici.sifre);
+
+    if (!sifreDogruMu) {
+      throw new UnauthorizedException('Kullanıcı adı veya şifre hatalı');
+    }
+
+    // JWT token oluştur
+    const token = this.createPanelToken(kullanici);
+
+    // Şifreyi döndürme
+    const { sifre: _s5, ...kullaniciData } = kullanici;
+
+    return {
+      kullanici: kullaniciData,
+      access_token: token,
+    };
   }
 
   private createToken(kullanici: Kullanicilar): string {
@@ -211,7 +251,16 @@ export class AuthService {
 
     return this.jwtService.sign(payload);
   }
+
+  private createPanelToken(kullanici: PanelKullanicilar): string {
+    const payload = {
+      sub: kullanici.id,
+      kullanici_adi: kullanici.kullanici_adi,
+      email: kullanici.email,
+      rol: kullanici.rol,
+      isPanelUser: true,
+    };
+
+    return this.jwtService.sign(payload);
+  }
 }
-
-
-

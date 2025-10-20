@@ -17,3 +17,4 @@ import { UrunlerModule } from '../urunler/urunler.module';
 })
 export class RezervasyonlarModule {}
 
+

@@ -65,3 +65,4 @@ CREATE INDEX IF NOT EXISTS idx_loglari_odeme ON odeme_loglari(odeme_id);
 CREATE INDEX IF NOT EXISTS idx_loglari_merchant_oid ON odeme_loglari(merchant_oid);
 CREATE INDEX IF NOT EXISTS idx_loglari_tip ON odeme_loglari(log_tipi);
 
+

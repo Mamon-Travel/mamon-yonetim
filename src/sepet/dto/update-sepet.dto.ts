@@ -3,3 +3,4 @@ import { CreateSepetDto } from './create-sepet.dto';
 
 export class UpdateSepetDto extends PartialType(CreateSepetDto) {}
 
+

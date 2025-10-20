@@ -6,10 +6,11 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { Kullanicilar } from '../kullanicilar/entities/kullanicilar.entity';
+import { PanelKullanicilar } from '../panel-kullanicilar/entities/panel-kullanicilar.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Kullanicilar]),
+    TypeOrmModule.forFeature([Kullanicilar, PanelKullanicilar]),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'mamon-travel-secret-key-2025',
@@ -21,6 +22,7 @@ import { Kullanicilar } from '../kullanicilar/entities/kullanicilar.entity';
   exports: [AuthService],
 })
 export class AuthModule {}
+
 
 
 

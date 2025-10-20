@@ -77,6 +77,17 @@ export class AuthController {
     return this.authService.loginPanel(loginDto);
   }
 
+  @Post('login-panel-user')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Panel kullanıcı girişi (panel_kullanicilar tablosu için)',
+  })
+  @ApiResponse({ status: 200, description: 'Giriş başarılı' })
+  @ApiResponse({ status: 401, description: 'Kullanıcı adı veya şifre hatalı' })
+  async loginPanelUser(@Body() loginDto: LoginDto) {
+    return this.authService.loginPanelUser(loginDto);
+  }
+
   @Get('profile')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -87,6 +98,7 @@ export class AuthController {
     return this.authService.getProfile(user.id);
   }
 }
+
 
 
 

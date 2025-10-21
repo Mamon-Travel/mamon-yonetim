@@ -38,3 +38,4 @@ export class Dil {
   ceviriler: Ceviri[];
 }
 
+

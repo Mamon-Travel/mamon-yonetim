@@ -24,3 +24,4 @@ RETURNING id;
 -- Dönen ID'yi kullanarak alt menüleri ekleyin
 */
 
+

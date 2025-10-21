@@ -67,3 +67,4 @@ export class CreateOdaTipiDto {
   odaOzellikIds?: number[];
 }
 
+

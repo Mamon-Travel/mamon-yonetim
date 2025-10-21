@@ -12,3 +12,4 @@ import { OtelOzellik } from "./entities/otel-ozellik.entity";
 })
 export class OtelOzellikModule {}
 
+

@@ -18,3 +18,4 @@ JOIN anamenu am ON aa.anamenu_id = am.id
 WHERE aa.rota LIKE '/otel%' 
 ORDER BY aa.sira;
 
+

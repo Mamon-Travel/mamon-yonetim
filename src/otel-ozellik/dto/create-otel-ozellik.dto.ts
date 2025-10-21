@@ -44,3 +44,4 @@ export class CreateOtelOzellikDto {
   durum?: number;
 }
 
+

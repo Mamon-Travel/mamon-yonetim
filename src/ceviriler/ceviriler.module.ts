@@ -12,3 +12,4 @@ import { Ceviri } from "./entities/ceviri.entity";
 })
 export class CevirilerModule {}
 
+

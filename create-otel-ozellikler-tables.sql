@@ -115,3 +115,4 @@ COMMENT ON COLUMN otel_oda_ozellik.ikon IS 'İkon adı';
 COMMENT ON COLUMN otel_oda_ozellik.sira IS 'Sıralama';
 COMMENT ON COLUMN otel_oda_ozellik.durum IS 'Durum (1: Aktif, 0: Pasif)';
 
+

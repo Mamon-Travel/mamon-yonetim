@@ -42,3 +42,4 @@ export class OtelOdaOzellik {
   guncelleme_tarihi: Date;
 }
 
+

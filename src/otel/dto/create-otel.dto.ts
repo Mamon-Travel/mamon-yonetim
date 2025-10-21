@@ -175,3 +175,4 @@ export class CreateOtelDto {
   otelOzellikIds?: number[];
 }
 
+

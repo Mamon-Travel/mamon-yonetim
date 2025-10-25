@@ -9,3 +9,10 @@ export class UpdateHizmetlerDto extends PartialType(CreateHizmetlerDto) {}
 
 
 
+
+
+
+
+
+
+

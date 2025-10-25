@@ -20,6 +20,20 @@ import { OtelOdaOzellikModule } from './otel-oda-ozellik/otel-oda-ozellik.module
 import { OtelModule } from './otel/otel.module';
 import { DillerModule } from './diller/diller.module';
 import { CevirilerModule } from './ceviriler/ceviriler.module';
+import { KategorilerModule } from './kategoriler/kategoriler.module';
+import { SiteOzellikleriModule } from './site-ozellikleri/site-ozellikleri.module';
+import { NasilCalisirModule } from './nasil-calisir/nasil-calisir.module';
+import { FooterModule } from './footer/footer.module';
+import { OtelPansiyonTipiModule } from './otel-pansiyon-tipi/otel-pansiyon-tipi.module';
+import { OtelFiyatTakvimModule } from './otel-fiyat-takvim/otel-fiyat-takvim.module';
+import { OtelStokTakvimModule } from './otel-stok-takvim/otel-stok-takvim.module';
+import { OtelIptalPolitikaModule } from './otel-iptal-politika/otel-iptal-politika.module';
+import { DovizKurModule } from './doviz-kur/doviz-kur.module';
+import { GorselIslemModule } from './gorsel-islem/gorsel-islem.module';
+import { PaylasimSablonModule } from './paylasim-sablon/paylasim-sablon.module';
+import { AiModule } from './ai/ai.module';
+import { DinamikSayfalarModule } from './dinamik-sayfalar/dinamik-sayfalar.module';
+import { FileManagerModule } from './file-manager/file-manager.module';
 
 @Module({
   imports: [
@@ -34,7 +48,7 @@ import { CevirilerModule } from './ceviriler/ceviriler.module';
       password: process.env.DB_PASSWORD || "",
       database: process.env.DB_DATABASE || "mamon_travel",
       entities: [__dirname + "/**/*.entity{.ts,.js}"],
-      synchronize: process.env.NODE_ENV === "development",
+      synchronize: false, // TypeORM metadata hatası için geçici olarak kapatıldı
     }),
     AnamenuModule,
     AnamenuAltModule,
@@ -53,6 +67,20 @@ import { CevirilerModule } from './ceviriler/ceviriler.module';
     OtelModule,
     DillerModule,
     CevirilerModule,
+    KategorilerModule,
+    SiteOzellikleriModule,
+    NasilCalisirModule,
+    FooterModule,
+    OtelPansiyonTipiModule,
+    OtelFiyatTakvimModule,
+    OtelStokTakvimModule,
+    OtelIptalPolitikaModule,
+    DovizKurModule,
+    GorselIslemModule,
+    PaylasimSablonModule,
+    AiModule,
+    DinamikSayfalarModule,
+    FileManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

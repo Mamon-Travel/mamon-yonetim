@@ -4,3 +4,10 @@ import { CreateOtelOzellikDto } from "./create-otel-ozellik.dto";
 export class UpdateOtelOzellikDto extends PartialType(CreateOtelOzellikDto) {}
 
 
+
+
+
+
+
+
+

@@ -60,3 +60,10 @@ export class CreateHizmetlerDto {
 
 
 
+
+
+
+
+
+
+

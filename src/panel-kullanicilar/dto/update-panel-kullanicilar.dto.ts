@@ -8,3 +8,10 @@ export class UpdatePanelKullanicilarDto extends PartialType(
 
 
 
+
+
+
+
+
+
+

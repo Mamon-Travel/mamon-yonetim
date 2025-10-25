@@ -93,6 +93,27 @@ export class CevirilerController {
     return this.cevirilerService.getKategorilerByDilId(+dilId);
   }
 
+  @Get("grouped")
+  @ApiOperation({ summary: "Çevirileri gruplanmış formatta getir (anahtar bazlı)" })
+  @ApiResponse({ status: 200, description: "Gruplanmış çeviri listesi" })
+  getCevirilerGrouped() {
+    return this.cevirilerService.getCevirilerGrouped();
+  }
+
+  @Get("keys/all")
+  @ApiOperation({ summary: "Tüm benzersiz anahtarları getir" })
+  @ApiResponse({ status: 200, description: "Anahtar listesi" })
+  getAllKeys(): Promise<string[]> {
+    return this.cevirilerService.getAllKeys();
+  }
+
+  @Get("kategoriler/all")
+  @ApiOperation({ summary: "Tüm kategorileri getir" })
+  @ApiResponse({ status: 200, description: "Kategori listesi" })
+  getAllKategoriler(): Promise<string[]> {
+    return this.cevirilerService.getAllKategoriler();
+  }
+
   @Get(":id")
   @ApiOperation({ summary: "Çeviri detayını getir" })
   @ApiResponse({ status: 200, description: "Çeviri detayı", type: Ceviri })
@@ -109,6 +130,24 @@ export class CevirilerController {
     return this.cevirilerService.update(+id, updateCeviriDto);
   }
 
+  @Patch("group/:anahtar")
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Bir anahtar için tüm dillerdeki çevirileri güncelle" })
+  @ApiResponse({ status: 200, description: "Çeviriler güncellendi", type: [Ceviri] })
+  updateCeviriGroup(
+    @Param("anahtar") anahtar: string,
+    @Body()
+    data: {
+      kategori?: string;
+      aciklama?: string;
+      durum?: number;
+      ceviriler: { dil_id: number; deger: string }[];
+    }
+  ): Promise<Ceviri[]> {
+    return this.cevirilerService.updateCeviriGroup(anahtar, data);
+  }
+
   @Delete(":id")
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -118,6 +157,19 @@ export class CevirilerController {
   remove(@Param("id") id: string): Promise<void> {
     return this.cevirilerService.remove(+id);
   }
+
+  @Delete("group/:anahtar")
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: "Bir anahtara ait tüm dillerdeki çevirileri sil" })
+  @ApiResponse({ status: 204, description: "Çeviriler silindi" })
+  removeByAnahtar(@Param("anahtar") anahtar: string): Promise<void> {
+    return this.cevirilerService.removeByAnahtar(anahtar);
+  }
 }
+
+
+
 
 

@@ -106,3 +106,10 @@ export class OtelOzellikController {
 }
 
 
+
+
+
+
+
+
+

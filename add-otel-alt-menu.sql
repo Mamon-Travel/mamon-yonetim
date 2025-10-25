@@ -19,3 +19,10 @@ WHERE aa.rota LIKE '/otel%'
 ORDER BY aa.sira;
 
 
+
+
+
+
+
+
+

@@ -13,3 +13,10 @@ import { Dil } from "./entities/dil.entity";
 export class DillerModule {}
 
 
+
+
+
+
+
+
+

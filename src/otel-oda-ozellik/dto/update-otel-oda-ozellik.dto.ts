@@ -6,3 +6,10 @@ export class UpdateOtelOdaOzellikDto extends PartialType(
 ) {}
 
 
+
+
+
+
+
+
+

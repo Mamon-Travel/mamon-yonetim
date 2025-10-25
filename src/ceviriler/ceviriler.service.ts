@@ -163,5 +163,112 @@ export class CevirilerService {
 
     return result.map((r) => r.kategori);
   }
+
+  // Tüm benzersiz anahtarları getir
+  async getAllKeys(): Promise<string[]> {
+    const result = await this.cevirilerRepository
+      .createQueryBuilder("ceviri")
+      .select("DISTINCT ceviri.anahtar", "anahtar")
+      .orderBy("ceviri.anahtar", "ASC")
+      .getRawMany();
+
+    return result.map((r) => r.anahtar);
+  }
+
+  // Tüm kategorileri getir
+  async getAllKategoriler(): Promise<string[]> {
+    const result = await this.cevirilerRepository
+      .createQueryBuilder("ceviri")
+      .select("DISTINCT ceviri.kategori", "kategori")
+      .where("ceviri.kategori IS NOT NULL")
+      .orderBy("ceviri.kategori", "ASC")
+      .getRawMany();
+
+    return result.map((r) => r.kategori);
+  }
+
+  // Çevirileri gruplanmış formatta getir (anahtar bazlı)
+  async getCevirilerGrouped(): Promise<any[]> {
+    const ceviriler = await this.cevirilerRepository.find({
+      relations: ["dil"],
+      order: { kategori: "ASC", anahtar: "ASC" },
+    });
+
+    // Anahtara göre grupla
+    const grouped = ceviriler.reduce((acc, ceviri) => {
+      if (!acc[ceviri.anahtar]) {
+        acc[ceviri.anahtar] = {
+          anahtar: ceviri.anahtar,
+          kategori: ceviri.kategori,
+          aciklama: ceviri.aciklama,
+          durum: ceviri.durum,
+          diller: {},
+        };
+      }
+      acc[ceviri.anahtar].diller[ceviri.dil.kod] = {
+        id: ceviri.id,
+        dil_id: ceviri.dil_id,
+        deger: ceviri.deger,
+        dil: ceviri.dil,
+      };
+      return acc;
+    }, {} as any);
+
+    return Object.values(grouped);
+  }
+
+  // Toplu güncelleme - bir anahtar için tüm dillerdeki çevirileri güncelle
+  async updateCeviriGroup(
+    anahtar: string,
+    data: {
+      kategori?: string;
+      aciklama?: string;
+      durum?: number;
+      ceviriler: { dil_id: number; deger: string }[];
+    }
+  ): Promise<Ceviri[]> {
+    const results: Ceviri[] = [];
+
+    for (const ceviriData of data.ceviriler) {
+      // Var mı kontrol et
+      const existing = await this.cevirilerRepository.findOne({
+        where: {
+          anahtar: anahtar,
+          dil_id: ceviriData.dil_id,
+        },
+      });
+
+      if (existing) {
+        // Güncelle
+        Object.assign(existing, {
+          deger: ceviriData.deger,
+          kategori: data.kategori !== undefined ? data.kategori : existing.kategori,
+          aciklama: data.aciklama !== undefined ? data.aciklama : existing.aciklama,
+          durum: data.durum !== undefined ? data.durum : existing.durum,
+        });
+        const updated = await this.cevirilerRepository.save(existing);
+        results.push(updated);
+      } else {
+        // Yeni oluştur
+        const newCeviri = this.cevirilerRepository.create({
+          anahtar: anahtar,
+          dil_id: ceviriData.dil_id,
+          deger: ceviriData.deger,
+          kategori: data.kategori || "",
+          aciklama: data.aciklama || "",
+          durum: data.durum || 1,
+        });
+        const saved = await this.cevirilerRepository.save(newCeviri);
+        results.push(saved);
+      }
+    }
+
+    return results;
+  }
+
+  // Bir anahtara ait tüm dillerdeki çevirileri sil
+  async removeByAnahtar(anahtar: string): Promise<void> {
+    await this.cevirilerRepository.delete({ anahtar });
+  }
 }
 

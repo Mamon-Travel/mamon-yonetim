@@ -26,14 +26,14 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { KullaniciTipi } from './enums/kullanici-tipi.enum';
 
 @ApiTags('Kullanıcılar')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(KullaniciTipi.YONETICI)
 @Controller('kullanicilar')
 export class KullanicilarController {
   constructor(private readonly kullanicilarService: KullanicilarService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(KullaniciTipi.YONETICI)
   @ApiOperation({ summary: 'Yeni kullanıcı oluştur' })
   @ApiResponse({
     status: 201,
